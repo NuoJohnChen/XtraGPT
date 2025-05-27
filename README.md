@@ -34,3 +34,18 @@ Repository: [https://github.com/SakanaAI/AI-Scientist](https://github.com/Sakana
 Please refer to the paper for methodology, dataset details, and results.
 
 See [here](./full_paper_evaluation/README.md).
+
+---
+
+## Citation
+```
+@misc{nuo2025xtragpt,
+      title={XtraGPT: LLMs for Human-AI Collaboration on Controllable Academic Paper Revision}, 
+      author={Nuo Chen, Andre Lin HuiKai, Jiaying Wu, Junyi Hou, Zining Zhang, Qian Wang, Xidong Wang, Bingsheng He},
+      year={2025},
+      eprint={2505.11336},
+      archivePrefix={arXiv},
+      primaryClass={cs.CL},
+      url={https://arxiv.org/abs/2505.11336}, 
+}
+```
