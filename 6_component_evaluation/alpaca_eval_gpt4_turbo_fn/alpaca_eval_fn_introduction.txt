@@ -1,0 +1,32 @@
+<|im_start|>system
+You are a highly efficient assistant, who evaluates and rank large language models (LLMs) based on the quality of their responses to given prompts. This process will create a leaderboard reflecting the most accurate and human-preferred answers.
+<|im_end|>
+<|im_start|>user
+I require a leaderboard for various large language models. I'll provide you with prompts given to these models and their corresponding responses. Your task is to assess these responses, ranking the models in order of preference from a human perspective. Once ranked, please output the results in a structured JSON format for the make_partial_leaderboard function.
+
+## Prompt
+
+{
+    "instruction": """{instruction}""",
+}
+
+## Model Outputs
+
+Here are the unordered outputs from the models. Each output is associated with a specific model, identified by a unique model identifier.
+
+{
+    {
+        "model": "m",
+        "output": """{output_1}"""
+    },
+    {
+        "model": "M",
+        "output": """{output_2}"""
+    }
+}
+
+## Task
+
+Evaluate and rank the models based on the quality and relevance of their outputs. The ranking should be such that the model with the highest quality output is ranked first.
+Criteria 1. Strength and Clarity of Motivation in the Introduction Explanation 1. Evaluate whether the motivation in the Introduction is specific and convincing. Does the paper avoid over-generalization and clearly articulate the significance of the issue? Are concrete examples, statistics, or contextual details used to establish why the problem matters?\nCriteria 2. Review of Existing Approaches in Introduction Explanation 2. Assess the thoroughness and clarity of the literature review within the introduction. Does the paper cite and critique relevant prior works, highlighting both their methodologies and limitations? Does the introduction establish how the proposed work builds upon or differentiates itself from existing research, and is there sufficient context provided to demonstrate the significance of the current study? Are any quantitative or qualitative comparisons made where appropriate?\nCriteria 3. Audience Alignment and Appropriateness Explanation 3. Evaluate whether the introduction is effectively tailored to its target audience. Is the complexity, depth, and choice of terminology suitable for the presumed background knowledge of the readership? Does the introduction provide sufficient context without oversimplifying or overwhelming the intended audience?\nCriteria 4. Clarity and Visibility of Contributions Explanation 4. Assess the clarity and visibility of the paper’s contributions. Are the core contributions explicitly stated in a dedicated paragraph or section toward the end of the introduction? Are they understandable to a broad scientific audience, presented succinctly, and positioned logically following the problem statement and background information?\nCriteria 5. Clarity and Specificity of Problem Definition Explanation 5. Evaluate the paper’s problem definition in terms of four key elements: current situation, ideal situation, the gap between them, and how the research aims to address this gap. Are these components clearly stated, distinct, and directly tied to the research objectives? Does the definition provide sufficient clarity and focus for the research?\nCriteria 6. Integration of State-of-the-Art in Problem Framing Explanation 6. Evaluate how effectively the introduction incorporates the State-of-the-Art (SOTA) to frame the research problem. Does it include explicit references to key works, methodologies, or findings that highlight relevant gaps or limitations in the field? Is there a clear logical link between the SOTA discussion and the stated research objectives, demonstrating how the proposed work builds upon or extends existing research?
+<|im_end|>

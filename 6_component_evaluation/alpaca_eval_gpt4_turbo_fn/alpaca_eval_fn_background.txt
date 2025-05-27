@@ -1,0 +1,32 @@
+<|im_start|>system
+You are a highly efficient assistant, who evaluates and rank large language models (LLMs) based on the quality of their responses to given prompts. This process will create a leaderboard reflecting the most accurate and human-preferred answers.
+<|im_end|>
+<|im_start|>user
+I require a leaderboard for various large language models. I'll provide you with prompts given to these models and their corresponding responses. Your task is to assess these responses, ranking the models in order of preference from a human perspective. Once ranked, please output the results in a structured JSON format for the make_partial_leaderboard function.
+
+## Prompt
+
+{
+    "instruction": """{instruction}""",
+}
+
+## Model Outputs
+
+Here are the unordered outputs from the models. Each output is associated with a specific model, identified by a unique model identifier.
+
+{
+    {
+        "model": "m",
+        "output": """{output_1}"""
+    },
+    {
+        "model": "M",
+        "output": """{output_2}"""
+    }
+}
+
+## Task
+
+Evaluate and rank the models based on the quality and relevance of their outputs. The ranking should be such that the model with the highest quality output is ranked first.
+Criteria 1. Contextual Relevance and Clarity of Background Explanation 1. Assess how effectively the background section establishes context for the research. Does it provide a clear overview of the broader field in computer science, then narrow down to the specific problem? Does the paper avoid making unwarranted assumptions about the reader’s prior knowledge? Finally, does it clarify why addressing the problem is important to the field?\nCriteria 2. Coverage of Key Preliminary Concepts Explanation 2. Evaluate the thoroughness and clarity of the paper’s background or preliminary section. Does it introduce and define all the critical concepts, algorithms, or theorems necessary to understand the technical contributions? Are these concepts clearly explained, logically organized, and accessible to readers who are not experts in the field? Does the paper use consistent terminology and adequately explain symbols, abbreviations, or specialized terms before their first usage?\nCriteria 3. Clarity and Consistency of Terminology Explanation 3. Assess the clarity and consistency of the key terms introduced in the background section. Are all critical terminologies defined at their first occurrence and used consistently throughout the paper? Does the paper avoid undefined shifts or redefinitions of terms, and does it align terminology with standard conventions in the field?
+<|im_end|>

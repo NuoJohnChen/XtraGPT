@@ -1,0 +1,50 @@
+alpaca_eval_gpt4_turbo_fn:
+  batch_size: 1
+  completion_parser_kwargs:
+    parsers_to_kwargs:
+      json_parser:
+        annotation_key: ordered_models
+      ranking_parser:
+        model_1_name: m
+  completions_kwargs:
+    max_tokens: 200
+    model_name: gpt-4-1106-preview
+    temperature: 0
+    tool_choice:
+      function:
+        name: make_partial_leaderboard
+      type: function
+    tools:
+    - function:
+        description: Make a leaderboard of models given a list of the models ordered
+          by the preference of their outputs.
+        name: make_partial_leaderboard
+        parameters:
+          additionalProperties: false
+          properties:
+            ordered_models:
+              description: A list of models ordered by the preference of their outputs.
+                The first model in the list has the best output.
+              items:
+                additionalProperties: false
+                properties:
+                  model:
+                    description: The name of the model
+                    type: string
+                  rank:
+                    description: Order of preference of the model, 1 has the best
+                      output
+                    type: number
+                required:
+                - model
+                - rank
+                type: object
+              type: array
+          required:
+          - ordered_models
+          type: object
+        strict: true
+      type: function
+  fn_completion_parser: pipeline_meta_parser
+  fn_completions: openai_completions
+  prompt_template: alpaca_eval_gpt4_turbo_fn/alpaca_eval_fn_title.txt

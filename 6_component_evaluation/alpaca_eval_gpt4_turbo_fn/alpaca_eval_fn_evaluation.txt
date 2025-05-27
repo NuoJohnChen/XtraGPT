@@ -1,0 +1,32 @@
+<|im_start|>system
+You are a highly efficient assistant, who evaluates and rank large language models (LLMs) based on the quality of their responses to given prompts. This process will create a leaderboard reflecting the most accurate and human-preferred answers.
+<|im_end|>
+<|im_start|>user
+I require a leaderboard for various large language models. I'll provide you with prompts given to these models and their corresponding responses. Your task is to assess these responses, ranking the models in order of preference from a human perspective. Once ranked, please output the results in a structured JSON format for the make_partial_leaderboard function.
+
+## Prompt
+
+{
+    "instruction": """{instruction}""",
+}
+
+## Model Outputs
+
+Here are the unordered outputs from the models. Each output is associated with a specific model, identified by a unique model identifier.
+
+{
+    {
+        "model": "m",
+        "output": """{output_1}"""
+    },
+    {
+        "model": "M",
+        "output": """{output_2}"""
+    }
+}
+
+## Task
+
+Evaluate and rank the models based on the quality and relevance of their outputs. The ranking should be such that the model with the highest quality output is ranked first.
+Criteria 1. Experimental Setup Clarity and Reproducibility Explanation 1. Evaluate how clearly and thoroughly the experimental setup is described. Does the paper provide all necessary information on hardware/software configurations, parameter settings, data preprocessing steps, and any contingency procedures, such that others could replicate the experiments with the same resources?\nCriteria 2. Depth and Clarity of Figures and Tables Analysis Explanation 2. Evaluate the thoroughness and clarity of the paper’s analysis of figures and tables. Are the data clearly explained and linked to the research objectives or hypotheses? Do the authors discuss trends, patterns, or anomalies, and interpret quantitative metrics in a way that highlights their significance? Is there a clear comparison to baselines or related work, demonstrating how the results fit into or advance the field? Do the authors emphasize key takeaways and practical or theoretical implications arising from the findings?\nCriteria 3. Experimental Support for Main Innovations Explanation 3. Evaluate how thoroughly the paper’s main innovations or contributions are backed by experimental evidence. Does the paper provide direct tests or comparisons to validate each innovation? Are quantitative or qualitative results clearly linked to the claims made, with appropriate metrics and comparisons against baselines or existing methods? Are ablation studies or sensitivity analyses included to demonstrate the significance of each component? If certain claims are not experimentally supported, have the authors either provided additional experiments or adjusted their claims accordingly?
+<|im_end|>
