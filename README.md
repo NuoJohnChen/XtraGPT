@@ -19,7 +19,7 @@ We utilize **LLaMA-Factory** for instruction-tuning and running predictions on L
 
 Repository: [https://github.com/hiyouga/LLaMA-Factory](https://github.com/hiyouga/LLaMA-Factory)
 
-See [here](./prediction/README.md).
+See [here](./train/README.md).
 
 See XtraGPT Model [here](https://huggingface.co/Xtra-Computing/XtraGPT-7B).
 

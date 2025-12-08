@@ -1,0 +1,11 @@
+ {
+ "papertrain": {
+    "file_name": "https://huggingface.co/datasets/Xtra-Computing/ReviseQA/blob/main/train.json",
+    "formatting": "alpaca",
+    "columns": {
+      "prompt": "instruction",
+      "query": "input",
+      "response": "output"
+    }
+  },
+}
