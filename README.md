@@ -2,7 +2,6 @@
 
 Friend Project: 
 [PaperDebugger](https://github.com/PaperDebugger/paperdebugger)
-[Part of Code](https://github.com/NuoJohnChen/paperLLM/tree/main)
 
 This repo comprises three main components:
 
