@@ -5,6 +5,10 @@ We use llama-factory for finetuning and running prediction of our models.
 ## Download
 First, download the open-source code: [https://github.com/hiyouga/LLaMA-Factory](https://github.com/hiyouga/LLaMA-Factory)
 
+```
+llamafactory-cli train examples/paper_sft.yaml
+```
+
 ## Run
 ```
 ./run_prediction.sh
