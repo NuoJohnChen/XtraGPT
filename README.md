@@ -3,7 +3,7 @@
 Friend Project: 
 [PaperDebugger](https://github.com/PaperDebugger/paperdebugger)
 
-This repo comprises three main components:
+This repo comprises those components:
 
 ---
 
