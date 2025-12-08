@@ -41,11 +41,13 @@ For holistic, end-to-end evaluation of entire research papers, we leverage the *
 
 Repository: [https://github.com/SakanaAI/AI-Scientist](https://github.com/SakanaAI/AI-Scientist)
 
+See [here](./full_paper_evaluation/README.md).
+
 ---
 
 Please refer to the paper for methodology, dataset details, and results.
 
-See [here](./full_paper_evaluation/README.md).
+See [here](https://arxiv.org/abs/2505.11336).
 
 ---
 
