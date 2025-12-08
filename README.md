@@ -8,7 +8,13 @@ This repo comprises three main components:
 
 ---
 
-## 1. Fine-tuning and Prediction: [LLaMA-Factory](https://github.com/hiyouga/LLaMA-Factory)
+## 1. Data Preprocessing
+
+See [here](https://github.com/NuoJohnChen/paperLLM/tree/f4dfa784cc5bf973d379a57efebc0afd9f9106d5).
+
+See processed ReviseQA data [here](https://huggingface.co/datasets/Xtra-Computing/ReviseQA).
+
+## 2. Fine-tuning and Prediction: [LLaMA-Factory](https://github.com/hiyouga/LLaMA-Factory)
 
 We utilize **LLaMA-Factory** for instruction-tuning and running predictions on LLMs. This toolkit enables efficient fine-tuning using popular techniques such as LoRA, QLoRA, and supports a wide range of base models.
 
@@ -16,18 +22,21 @@ Repository: [https://github.com/hiyouga/LLaMA-Factory](https://github.com/hiyoug
 
 See [here](./prediction/README.md).
 
+See XtraGPT Model [here](https://huggingface.co/Xtra-Computing/XtraGPT-7B).
+
 ---
 
-## 2. Component-wise Evaluation: [Modified AlpacaEval](https://github.com/tatsu-lab/alpaca_eval)
+## 3. Component-wise Evaluation: [Modified AlpacaEval](https://github.com/tatsu-lab/alpaca_eval)
 
 To evaluate individual sections of a paper—**Title**, **Abstract**, **Introduction**, **Background**, **Evaluation**, and **Conclusion**—we use a modified version of **AlpacaEval**. This allows us to benchmark each component independently using LLM-based comparative evaluation.
 
 Repository: [https://github.com/tatsu-lab/alpaca_eval](https://github.com/tatsu-lab/alpaca_eval)
 
 See [here](./6_component_evaluation/README.md).
+
 ---
 
-## 3. Full Paper Evaluation: [AI Scientist](https://github.com/SakanaAI/AI-Scientist)
+## 4. Full Paper Evaluation: [AI Scientist](https://github.com/SakanaAI/AI-Scientist)
 
 For holistic, end-to-end evaluation of entire research papers, we leverage the **AI Scientist** framework. This toolchain is designed for assessing scientific content quality using an LLM-centric pipeline.
 
