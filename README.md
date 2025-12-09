@@ -1,6 +1,6 @@
 # XtraGPT
 
-Friend Project: [PaperDebugger](https://github.com/PaperDebugger/paperdebugger)
+Refiner of [Friend Project: PaperDebugger](https://github.com/PaperDebugger/paperdebugger)
 
 ## Overview
 
