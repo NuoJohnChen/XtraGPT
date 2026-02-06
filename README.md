@@ -18,88 +18,13 @@ The models were trained on a dataset of 140,000 high-quality instruction-revisio
 
 ---
 
-## Inference with Transformers
-
-To use XtraGPT with the standard Hugging Face `transformers` library, ensure you format your input using the specific tags `<PAPER_CONTENT>`, `<SELECTED_CONTENT>`, and `<QUESTION>`.
-
-```python
-import torch
-from transformers import AutoModelForCausalLM, AutoTokenizer
-
-# Select the model size: "XtraGPT-1.5B", "XtraGPT-3B", "XtraGPT-7B", or "XtraGPT-14B"
-model_name = "Xtra-Computing/XtraGPT-7B"
-
-tokenizer = AutoTokenizer.from_pretrained(model_name)
-model = AutoModelForCausalLM.from_pretrained(
-    model_name,
-    torch_dtype=torch.float16,
-    device_map="auto"
-)
-
-# Define the Prompt Template tailored for XtraGPT
-prompt_template = """Act as an expert model for improving articles **PAPER_CONTENT**.
-The output needs to answer the **QUESTION** on **SELECTED_CONTENT** in the input. Avoid adding unnecessary length, unrelated details, overclaims, or vague statements.
-Focus on clear, concise, and evidence-based improvements that align with the overall context of the paper.
-<PAPER_CONTENT>
-{paper_content}
-</PAPER_CONTENT>
-<SELECTED_CONTENT>
-{selected_content}
-</SELECTED_CONTENT>
-<QUESTION>
-{user_question}
-</QUESTION>"""
-
-# Example Data (from the "Attention Is All You Need" paper)
-paper_content = "The dominant sequence transduction models are based on complex recurrent or convolutional neural networks in an encoder-decoder configuration. The best performing models also connect the encoder and decoder through an attention mechanism. We propose a new simple network architecture, the Transformer, based solely on attention mechanisms, dispensing with recurrence and convolutions entirely. Experiments on two machine translation tasks show these models to be superior in quality while being more parallelizable and requiring significantly less time to train."
-selected_content = "The dominant sequence transduction models are based on complex recurrent or convolutional neural networks in an encoder-decoder configuration."
-user_question = "help me make it more concise."
-
-# Format the input
-formatted_prompt = prompt_template.format(
-    paper_content=paper_content,
-    selected_content=selected_content,
-    user_question=user_question
-)
-
-messages = [
-    {"role": "user", "content": formatted_prompt}
-]
-
-# Apply chat template
-text = tokenizer.apply_chat_template(
-    messages,
-    tokenize=False,
-    add_generation_prompt=True
-)
-
-model_inputs = tokenizer([text], return_tensors="pt").to(model.device)
-
-# Generate
-generated_ids = model.generate(
-    **model_inputs,
-    max_new_tokens=16384,
-    temperature=0.1
-)
-
-generated_ids = [
-    output_ids[len(input_ids):] for input_ids, output_ids in zip(model_inputs.input_ids, generated_ids)
-]
-
-response = tokenizer.batch_decode(generated_ids, skip_special_tokens=True)[0]
-print(response)
-```
-
----
-
 ## Table of Contents
 
 - [Installation](#installation)
+- [Model Zoo](#model-zoo)
 - [Training](#training)
 - [Evaluation](#evaluation)
-  - [Component-wise Evaluation](#component-wise-evaluation)
-  - [Full Paper Evaluation](#full-paper-evaluation)
-- [Model Zoo](#model-zoo)
+- [Inference with Transformers](#inference-with-transformers)
 - [Citation](#citation)
 
 ---
@@ -117,6 +42,17 @@ pip install -r requirements.txt
 # For training, also install LLaMA-Factory
 pip install llamafactory
 ```
+
+---
+
+## Model Zoo
+
+| Model | Size | HuggingFace |
+|-------|------|-------------|
+| XtraGPT-1.5B | 1.5B | [Link](https://huggingface.co/Xtra-Computing/XtraGPT-1.5B) |
+| XtraGPT-3B | 3B | [Link](https://huggingface.co/Xtra-Computing/XtraGPT-3B) |
+| XtraGPT-7B | 7B | [Link](https://huggingface.co/Xtra-Computing/XtraGPT-7B) |
+| XtraGPT-14B | 14B | [Link](https://huggingface.co/Xtra-Computing/XtraGPT-14B) |
 
 ---
 
@@ -257,14 +193,77 @@ XtraGPT/
 
 ---
 
-## Model Zoo
+## Inference with Transformers
 
-| Model | Size | HuggingFace |
-|-------|------|-------------|
-| XtraGPT-1.5B | 1.5B | [Link](https://huggingface.co/Xtra-Computing/XtraGPT-1.5B) |
-| XtraGPT-3B | 3B | [Link](https://huggingface.co/Xtra-Computing/XtraGPT-3B) |
-| XtraGPT-7B | 7B | [Link](https://huggingface.co/Xtra-Computing/XtraGPT-7B) |
-| XtraGPT-14B | 14B | [Link](https://huggingface.co/Xtra-Computing/XtraGPT-14B) |
+To use XtraGPT with the standard Hugging Face `transformers` library, ensure you format your input using the specific tags `<PAPER_CONTENT>`, `<SELECTED_CONTENT>`, and `<QUESTION>`.
+
+```python
+import torch
+from transformers import AutoModelForCausalLM, AutoTokenizer
+
+# Select the model size: "XtraGPT-1.5B", "XtraGPT-3B", "XtraGPT-7B", or "XtraGPT-14B"
+model_name = "Xtra-Computing/XtraGPT-7B"
+
+tokenizer = AutoTokenizer.from_pretrained(model_name)
+model = AutoModelForCausalLM.from_pretrained(
+    model_name,
+    torch_dtype=torch.float16,
+    device_map="auto"
+)
+
+# Define the Prompt Template tailored for XtraGPT
+prompt_template = """Act as an expert model for improving articles **PAPER_CONTENT**.
+The output needs to answer the **QUESTION** on **SELECTED_CONTENT** in the input. Avoid adding unnecessary length, unrelated details, overclaims, or vague statements.
+Focus on clear, concise, and evidence-based improvements that align with the overall context of the paper.
+<PAPER_CONTENT>
+{paper_content}
+</PAPER_CONTENT>
+<SELECTED_CONTENT>
+{selected_content}
+</SELECTED_CONTENT>
+<QUESTION>
+{user_question}
+</QUESTION>"""
+
+# Example Data (from the "Attention Is All You Need" paper)
+paper_content = "The dominant sequence transduction models are based on complex recurrent or convolutional neural networks in an encoder-decoder configuration. The best performing models also connect the encoder and decoder through an attention mechanism. We propose a new simple network architecture, the Transformer, based solely on attention mechanisms, dispensing with recurrence and convolutions entirely. Experiments on two machine translation tasks show these models to be superior in quality while being more parallelizable and requiring significantly less time to train."
+selected_content = "The dominant sequence transduction models are based on complex recurrent or convolutional neural networks in an encoder-decoder configuration."
+user_question = "help me make it more concise."
+
+# Format the input
+formatted_prompt = prompt_template.format(
+    paper_content=paper_content,
+    selected_content=selected_content,
+    user_question=user_question
+)
+
+messages = [
+    {"role": "user", "content": formatted_prompt}
+]
+
+# Apply chat template
+text = tokenizer.apply_chat_template(
+    messages,
+    tokenize=False,
+    add_generation_prompt=True
+)
+
+model_inputs = tokenizer([text], return_tensors="pt").to(model.device)
+
+# Generate
+generated_ids = model.generate(
+    **model_inputs,
+    max_new_tokens=16384,
+    temperature=0.1
+)
+
+generated_ids = [
+    output_ids[len(input_ids):] for input_ids, output_ids in zip(model_inputs.input_ids, generated_ids)
+]
+
+response = tokenizer.batch_decode(generated_ids, skip_special_tokens=True)[0]
+print(response)
+```
 
 ---
 
