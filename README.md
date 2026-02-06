@@ -25,6 +25,8 @@ The models were trained on a dataset of 140,000 high-quality instruction-revisio
 - [Training](#training)
 - [Evaluation](#evaluation)
 - [Inference with Transformers](#inference-with-transformers)
+- [Model License](#model-license)
+- [Acknowledgements](#acknowledgements)
 - [Citation](#citation)
 
 ---
@@ -267,22 +269,6 @@ print(response)
 
 ---
 
-## Citation
-
-```bibtex
-@misc{nuo2025xtragpt,
-      title={XtraGPT: LLMs for Human-AI Collaboration on Controllable Academic Paper Revision},
-      author={Nuo Chen and Andre Lin HuiKai and Jiaying Wu and Junyi Hou and Zining Zhang and Qian Wang and Xidong Wang and Bingsheng He},
-      year={2025},
-      eprint={2505.11336},
-      archivePrefix={arXiv},
-      primaryClass={cs.CL},
-      url={https://arxiv.org/abs/2505.11336},
-}
-```
-
----
-
 ## Model License
 
 This model is released under the **ModelGo Zero License 2.0 (MG0-2.0)**.
@@ -298,3 +284,19 @@ For more details on the license terms, please visit [ModelGo.li](https://www.mod
 - [LLaMA-Factory](https://github.com/hiyouga/LLaMA-Factory)
 - [AlpacaEval](https://github.com/tatsu-lab/alpaca_eval)
 - [AI-Scientist](https://github.com/SakanaAI/AI-Scientist)
+
+---
+
+## Citation
+
+```bibtex
+@misc{nuo2025xtragpt,
+      title={XtraGPT: LLMs for Human-AI Collaboration on Controllable Academic Paper Revision},
+      author={Nuo Chen and Andre Lin HuiKai and Jiaying Wu and Junyi Hou and Zining Zhang and Qian Wang and Xidong Wang and Bingsheng He},
+      year={2025},
+      eprint={2505.11336},
+      archivePrefix={arXiv},
+      primaryClass={cs.CL},
+      url={https://arxiv.org/abs/2505.11336},
+}
+```
