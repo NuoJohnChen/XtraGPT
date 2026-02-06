@@ -1,3 +1,0 @@
-[submodule "data_processing"]
-	path = data_processing
-	url = https://github.com/NuoJohnChen/paperLLM

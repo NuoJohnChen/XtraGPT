@@ -1,2 +1,69 @@
-/shared/ssd/ConferenceQA_test/data_list.json
-/shared/ssd/ConferenceQA_train_new/data_list.json
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg
+*.egg-info/
+.eggs/
+dist/
+build/
+eggs/
+parts/
+var/
+sdist/
+develop-eggs/
+.installed.cfg
+
+# Virtual environments
+.env
+.venv/
+venv/
+ENV/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.project
+.pydevproject
+.settings/
+
+# OS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Project specific
+output/
+predictions/
+results/
+*.log
+wandb/
+runs/
+
+# Jupyter
+.ipynb_checkpoints/
+*.ipynb
+
+# Model files (too large for git)
+*.bin
+*.safetensors
+*.pt
+*.pth
+*.ckpt
+
+# Data files (use HuggingFace instead)
+*.jsonl
+!examples/*.jsonl
+
+# Secrets
+.env.local
+*.key
+credentials.json

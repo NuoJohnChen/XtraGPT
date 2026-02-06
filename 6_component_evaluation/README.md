@@ -1,34 +1,92 @@
-# Run Alpaca Eval
+# Component-wise Evaluation
 
-Alpaca Eval tries to simulate human judgement using a preference model (their ML model is trained on human-labelled data).
+This module evaluates paper revisions for 6 sections using a modified [AlpacaEval](https://github.com/tatsu-lab/alpaca_eval) framework.
 
-Here, we seek to use the pairwise evaluation functionality to determine if the modifed output is indeed better than the original.
+## Sections Evaluated
 
-## Create Environment
-> conda create --name alpaca_eval python=3.10
-> conda activate alpaca_eval
+| Section | Description |
+|---------|-------------|
+| Title | Paper title improvements |
+| Abstract | Abstract clarity and impact |
+| Introduction | Introduction structure and flow |
+| Background | Related work and context |
+| Evaluation | Experimental methodology |
+| Conclusion | Summary and future work |
 
-## Install alpaca-eval
-First, download [alpaca-eval](https://github.com/tatsu-lab/alpaca_eval) from the open-source repository. We need to download the source code because we will be making some modifications.
+## Setup
 
-Then, install required packages with:
-```
-pip install -r requirements.txt
-```
+### 1. Install AlpacaEval
 
-## Modified Version
-Replace `alpaca_eval/src/alpaca_eval/evaluators_configs/alpaca_eval_gpt4_turbo_fn` with `./alpaca_eval_gpt4_turbo_fn`. This modifies the judgging process.
-
-## Prepare Dataset of JSON Format
-
-After obtaining the prediction json files, you should have run [converter](../prediction/run_converter.sh) to convert the prediction files into a format suitable for alpaca-eval.
-
-## Ready API Key
-```
-export OPENAI_API_KEY=<your_api_key>
+```bash
+git clone https://github.com/tatsu-lab/alpaca_eval.git
+cd alpaca_eval
+pip install -e .
 ```
 
-## Run
+### 2. Copy Modified Configs
+
+Replace the default AlpacaEval configs with our modified versions:
+
+```bash
+cp -r alpaca_eval_configs/* \
+    /path/to/alpaca_eval/src/alpaca_eval/evaluators_configs/alpaca_eval_gpt4_turbo_fn/
 ```
-./run_scorer.sh
+
+### 3. Set API Key
+
+```bash
+export OPENAI_API_KEY="your-api-key"
 ```
+
+## Usage
+
+### Step 1: Generate Predictions
+
+First, run inference with your model to generate predictions:
+
+```bash
+# Using XtraGPT
+MODEL_PATH="Xtra-Computing/XtraGPT-7B" bash ../../scripts/predict.sh
+```
+
+This creates `*_predictions.jsonl` files for each section.
+
+### Step 2: Convert to AlpacaEval Format
+
+```bash
+python convert_predictions.py \
+    --input_dir /path/to/predictions \
+    --output_dir /path/to/formatted \
+    --model_name "XtraGPT-7B"
+```
+
+### Step 3: Run Evaluation
+
+```bash
+bash run_eval.sh \
+    /path/to/model/formatted \
+    /path/to/baseline/formatted \
+    /path/to/output
+```
+
+## Output Format
+
+Results are saved in JSON format:
+
+```json
+{
+  "win_rate": 65.2,
+  "standard_error": 1.3,
+  "n_total": 1400
+}
+```
+
+## Modified Prompts
+
+We modified the AlpacaEval prompts to focus on academic writing quality:
+
+- `alpaca_eval_fn_abstract.txt` - Abstract-specific evaluation criteria
+- `alpaca_eval_fn_introduction.txt` - Introduction evaluation criteria
+- etc.
+
+See `alpaca_eval_configs/` for all modified prompts.

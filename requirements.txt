@@ -1,0 +1,10 @@
+torch>=2.0.0
+transformers>=4.40.0
+accelerate>=0.27.0
+datasets>=2.18.0
+peft>=0.10.0
+trl>=0.8.0
+vllm>=0.4.0
+openai>=1.0.0
+jsonargparse>=4.27.0
+pyyaml>=6.0
