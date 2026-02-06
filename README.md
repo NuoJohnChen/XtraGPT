@@ -1,20 +1,33 @@
 # XtraGPT
 
-**XtraGPT** is a family of open-source LLMs for human-AI collaborative academic paper revision.
-
 [![Models](https://img.shields.io/badge/🤗%20Models-XtraGPT-blue)](https://huggingface.co/Xtra-Computing/XtraGPT-7B)
 [![Dataset](https://img.shields.io/badge/🤗%20Dataset-ReviseQA-green)](https://huggingface.co/datasets/Xtra-Computing/ReviseQA)
 [![Paper](https://img.shields.io/badge/📄%20Paper-arXiv-red)](https://arxiv.org/abs/2505.11336)
 
-## Quick Start
+## Overview
 
-### Option 1: Use Pre-trained Models (Recommended)
+**XtraGPT** is a family of open-source Large Language Models (LLMs) designed specifically for **human-AI collaborative academic paper revision**. Unlike general-purpose models that often perform surface-level polishing, XtraGPT is fine-tuned to **understand the full context** of a research paper and execute specific, **criteria-guided** revision instructions. XtraGPT is the refiner of [Friend Project: PaperDebugger](https://github.com/PaperDebugger/paperdebugger)
+
+The models were trained on a dataset of 140,000 high-quality instruction-revision pairs derived from top-tier conference papers (ICLR).
+
+**Key Features:**
+
+* **Context-Aware:** Processes the full paper context to ensure revisions maintain consistency with the global narrative.
+* **Controllable:** Follows specific user instructions aligned with 20 academic writing criteria across 6 sections (Abstract, Introduction, etc.).
+* **Iterative Workflow:** Designed to support the "Human-AI Collaborative" (HAC) lifecycle where authors retain creative control.
+
+---
+
+## Inference with Transformers
+
+To use XtraGPT with the standard Hugging Face `transformers` library, ensure you format your input using the specific tags `<PAPER_CONTENT>`, `<SELECTED_CONTENT>`, and `<QUESTION>`.
 
 ```python
 import torch
 from transformers import AutoModelForCausalLM, AutoTokenizer
 
-model_name = "Xtra-Computing/XtraGPT-7B"  # Also: XtraGPT-1.5B, XtraGPT-3B, XtraGPT-14B
+# Select the model size: "XtraGPT-1.5B", "XtraGPT-3B", "XtraGPT-7B", or "XtraGPT-14B"
+model_name = "Xtra-Computing/XtraGPT-7B"
 
 tokenizer = AutoTokenizer.from_pretrained(model_name)
 model = AutoModelForCausalLM.from_pretrained(
@@ -23,30 +36,59 @@ model = AutoModelForCausalLM.from_pretrained(
     device_map="auto"
 )
 
-prompt = """Act as an expert model for improving articles **PAPER_CONTENT**.
-The output needs to answer the **QUESTION** on **SELECTED_CONTENT** in the input.
+# Define the Prompt Template tailored for XtraGPT
+prompt_template = """Act as an expert model for improving articles **PAPER_CONTENT**.
+The output needs to answer the **QUESTION** on **SELECTED_CONTENT** in the input. Avoid adding unnecessary length, unrelated details, overclaims, or vague statements.
+Focus on clear, concise, and evidence-based improvements that align with the overall context of the paper.
 <PAPER_CONTENT>
-{your_paper_content}
+{paper_content}
 </PAPER_CONTENT>
 <SELECTED_CONTENT>
-{text_to_revise}
+{selected_content}
 </SELECTED_CONTENT>
 <QUESTION>
-{revision_instruction}
+{user_question}
 </QUESTION>"""
 
-messages = [{"role": "user", "content": prompt}]
-text = tokenizer.apply_chat_template(messages, tokenize=False, add_generation_prompt=True)
-inputs = tokenizer([text], return_tensors="pt").to(model.device)
+# Example Data (from the "Attention Is All You Need" paper)
+paper_content = "The dominant sequence transduction models are based on complex recurrent or convolutional neural networks in an encoder-decoder configuration. The best performing models also connect the encoder and decoder through an attention mechanism. We propose a new simple network architecture, the Transformer, based solely on attention mechanisms, dispensing with recurrence and convolutions entirely. Experiments on two machine translation tasks show these models to be superior in quality while being more parallelizable and requiring significantly less time to train."
+selected_content = "The dominant sequence transduction models are based on complex recurrent or convolutional neural networks in an encoder-decoder configuration."
+user_question = "help me make it more concise."
 
-outputs = model.generate(**inputs, max_new_tokens=2048, temperature=0.1)
-response = tokenizer.decode(outputs[0][inputs.input_ids.shape[1]:], skip_special_tokens=True)
+# Format the input
+formatted_prompt = prompt_template.format(
+    paper_content=paper_content,
+    selected_content=selected_content,
+    user_question=user_question
+)
+
+messages = [
+    {"role": "user", "content": formatted_prompt}
+]
+
+# Apply chat template
+text = tokenizer.apply_chat_template(
+    messages,
+    tokenize=False,
+    add_generation_prompt=True
+)
+
+model_inputs = tokenizer([text], return_tensors="pt").to(model.device)
+
+# Generate
+generated_ids = model.generate(
+    **model_inputs,
+    max_new_tokens=16384,
+    temperature=0.1
+)
+
+generated_ids = [
+    output_ids[len(input_ids):] for input_ids, output_ids in zip(model_inputs.input_ids, generated_ids)
+]
+
+response = tokenizer.batch_decode(generated_ids, skip_special_tokens=True)[0]
 print(response)
 ```
-
-### Option 2: Train Your Own Model
-
-See [Training Guide](#training).
 
 ---
 
@@ -54,10 +96,10 @@ See [Training Guide](#training).
 
 - [Installation](#installation)
 - [Training](#training)
-- [Inference](#inference)
 - [Evaluation](#evaluation)
   - [Component-wise Evaluation](#component-wise-evaluation)
   - [Full Paper Evaluation](#full-paper-evaluation)
+- [Model Zoo](#model-zoo)
 - [Citation](#citation)
 
 ---
@@ -119,31 +161,6 @@ Key hyperparameters (from paper):
 | Gradient Accumulation | 4 |
 | Max Length | 16384 |
 | Warmup Ratio | 0.1 |
-
----
-
-## Inference
-
-### Batch Inference
-
-```bash
-# Set model path (HuggingFace or local)
-export MODEL_PATH="Xtra-Computing/XtraGPT-7B"
-export INPUT_FILE="./data/test_inputs.jsonl"
-export OUTPUT_FILE="./predictions.jsonl"
-
-bash scripts/predict.sh
-```
-
-### Input Format
-
-```json
-{
-  "paper_content": "Full paper text...",
-  "selected_content": "Sentence or paragraph to revise",
-  "instruction": "Make this more concise"
-}
-```
 
 ---
 
@@ -265,9 +282,17 @@ XtraGPT/
 }
 ```
 
-## License
+---
 
-This project is released under the [ModelGo Zero License 2.0 (MG0-2.0)](https://www.modelgo.li/).
+## Model License
+
+This model is released under the **ModelGo Zero License 2.0 (MG0-2.0)**.
+
+MG0-2.0 is a highly permissive open model license designed to facilitate the widest possible adoption and collaboration. It allows for **unrestricted use**, reproduction, distribution, and the creation of derivative works including for commercial purposes, without requiring attribution or imposing copyleft restrictions.
+
+For more details on the license terms, please visit [ModelGo.li](https://www.modelgo.li/) or refer to the `LICENSE` file in the repository.
+
+---
 
 ## Acknowledgements
 
