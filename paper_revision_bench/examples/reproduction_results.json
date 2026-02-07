@@ -1,0 +1,99 @@
+{
+  "win_rate": 0.6,
+  "lose_rate": 0.2,
+  "tie_rate": 0.2,
+  "average_score": 0.85,
+  "n_wins": 6,
+  "n_losses": 2,
+  "n_ties": 2,
+  "total": 10,
+  "metadata": {
+    "judge_model": "gpt-4-turbo",
+    "section": "title",
+    "criterion": "overall",
+    "temperature": 0.0,
+    "total_samples": 10
+  },
+  "details": [
+    {
+      "index": 0,
+      "winner": "original",
+      "score": 0.8,
+      "explanation": "The original title 'Learning Task Embeddings for Sequential Decision-Making Tasks' is more specific by including the word 'Tasks' at the end, which clarifies that the focus is on multiple tasks within the realm of sequential decision-making. This specificity is crucial in academic titles to convey the scope and focus of the research accurately. The revised title, while slightly more concise, loses this specificity, which could lead to ambiguity about whether the paper discusses a single decision-making process or multiple tasks. Therefore, the original title is better in terms of clarity and informativeness.",
+      "original_text": "# Learning Task Embeddings for Sequential Decision-Making Tasks",
+      "revised_text": "# Learning Task Embeddings for Sequential Decision-Making"
+    },
+    {
+      "index": 1,
+      "winner": "tie",
+      "score": 1.0,
+      "explanation": "Both the ORIGINAL and REVISED texts are identical, thus there is no difference in terms of clarity, conciseness, coherence, or adherence to academic writing standards. Both versions equally meet the criteria.",
+      "original_text": "Learning Task Embeddings for Sequential Decision-Making",
+      "revised_text": "Learning Task Embeddings for Sequential Decision-Making"
+    },
+    {
+      "index": 2,
+      "winner": "revised",
+      "score": 0.8,
+      "explanation": "The revised title is better as it adds clarity and appeal by describing the approach as 'novel' and explicitly stating the benefit of 'enhancing training efficiency'. This makes the title more informative and attractive to potential readers, aligning well with academic writing standards that favor specificity and informativeness.",
+      "original_text": "Local Expert Diffusion Models for Accelerated Training in Denoising Diffusion Probabilistic Models",
+      "revised_text": "Local Expert Diffusion Models: A Novel Approach for Enhancing Training Efficiency in Denoising Diffusion Probabilistic Models"
+    },
+    {
+      "index": 3,
+      "winner": "revised",
+      "score": 0.8,
+      "explanation": "The revised title is better as it is more structured and clearer in presenting the main focus of the paper. It emphasizes the enhancement in training efficiency due to the use of Local Expert Diffusion Models, which is more appealing and informative for readers interested in efficiency improvements. The original title, while accurate, is less engaging and slightly more cumbersome due to the phrase 'Efficient Training with,' which could be interpreted in various ways. The revised title's structure leads to better readability and coherence.",
+      "original_text": "Efficient Training with Local Expert Diffusion Models for Denoising Diffusion Probabilistic Models",
+      "revised_text": "Local Expert Diffusion Models for Enhanced Training Efficiency in Denoising Diffusion Probabilistic Models"
+    },
+    {
+      "index": 4,
+      "winner": "revised",
+      "score": 0.8,
+      "explanation": "The revised title 'RT-Trajectory: Enhancing Robotic Task Generalization through Hindsight Trajectory Sketches' is better as it uses the verb 'Enhancing' which adds an active and positive connotation, suggesting improvement and advancement in the field. This makes the title more engaging and informative about the paper's contribution compared to the original title which is more neutral. The use of 'through' instead of 'via' also slightly improves the flow and formality of the title, aligning better with academic writing standards.",
+      "original_text": "RT-Trajectory: Robotic Task Generalization via Hindsight Trajectory Sketches",
+      "revised_text": "RT-Trajectory: Enhancing Robotic Task Generalization through Hindsight Trajectory Sketches"
+    },
+    {
+      "index": 5,
+      "winner": "revised",
+      "score": 0.8,
+      "explanation": "The revised title 'RT-Trajectory: A Framework for Robotic Task Generalization Using Hindsight Trajectory Sketches' is more informative and specific compared to the original title. It introduces a framework name 'RT-Trajectory', specifies the method 'Using Hindsight Trajectory Sketches', and maintains clarity and coherence. This makes the revised title better suited for academic standards as it provides more detailed insight into the content of the paper, which is crucial for engaging the target audience and conveying the scope of the research.",
+      "original_text": "Robotic Task Generalization via Coarse Trajectory Sketches",
+      "revised_text": "RT-Trajectory: A Framework for Robotic Task Generalization Using Hindsight Trajectory Sketches"
+    },
+    {
+      "index": 6,
+      "winner": "revised",
+      "score": 0.8,
+      "explanation": "The revised title 'Decomposing Returns: Skill vs. Luck Through Advantage Function Decomposition' is more informative and specific compared to the original. It clearly outlines the main focus of the paper, which is the decomposition of returns, and specifies the elements involved, namely skill and luck, using the method of advantage function decomposition. This makes the revised title more coherent and aligned with academic writing standards, which favor clarity and specificity.",
+      "original_text": "Skill and Luck: Return Decomposition via Advantage Functions",
+      "revised_text": "Decomposing Returns: Skill vs. Luck Through Advantage Function Decomposition"
+    },
+    {
+      "index": 7,
+      "winner": "original",
+      "score": 0.8,
+      "explanation": "The original title 'Return Decomposition via Advantage Functions: Skill vs. Luck' is more informative and specific, providing insight into the focus of the paper, which appears to be analyzing the roles of skill and luck in return decomposition. The revised title, while concise, loses this critical detail, making it less informative and potentially less engaging for the intended academic audience.",
+      "original_text": "Return Decomposition via Advantage Functions: Skill vs. Luck",
+      "revised_text": "Return Decomposition via Advantage Functions"
+    },
+    {
+      "index": 8,
+      "winner": "tie",
+      "score": 1.0,
+      "explanation": "Both the ORIGINAL and REVISED texts are identical, thus there is no difference in terms of clarity, conciseness, coherence, or adherence to academic writing standards. Both versions equally meet the criteria.",
+      "original_text": "Heterophilous Triple Flows for Molecule Generation",
+      "revised_text": "Heterophilous Triple Flows for Molecule Generation"
+    },
+    {
+      "index": 9,
+      "winner": "revised",
+      "score": 0.9,
+      "explanation": "The revised title 'HTFlows: A Novel Framework for Molecule Generation with Heterophilous Triple Flows' is superior as it is more informative and specific. It introduces the acronym 'HTFlows', which is likely defined in the paper, making the title more concise and easier to reference. Additionally, the phrase 'A Novel Framework' highlights the innovation of the research, enhancing the academic appeal. The inclusion of both the specific method 'Heterophilous Triple Flows' and the general topic 'Molecule Generation' broadens the scope of understanding for a wider academic audience. This title is clearer, more engaging, and aligns well with academic writing standards.",
+      "original_text": "# Molecule Generation by Heterophilous Triple Flows\n\nThis title effectively captures the main theme of the paper, which revolves around the introduction of a novel approach called HTFlows that specifically addresses the heterophily issue in molecular generation. It aligns well with the key concepts introduced in the abstract and introduction, which emphasize the challenges of using homophily-based methods and the need for a model that can handle heterophily patterns in molecular data. The term \"Heterophilous Triple Flows\" succinctly describes the multiple interactive flows designed to capture and utilize heterophily in the generation process, making the title both informative and reflective of the paper's content.",
+      "revised_text": "# HTFlows: A Novel Framework for Molecule Generation with Heterophilous Triple Flows"
+    }
+  ]
+}

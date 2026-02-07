@@ -1,0 +1,17 @@
+[
+    {
+        "original": "The dominant sequence transduction models are based on complex recurrent or convolutional neural networks in an encoder-decoder configuration.",
+        "revised": "Sequence transduction models typically rely on complex RNNs or CNNs in encoder-decoder architectures.",
+        "context": "We propose a new simple network architecture, the Transformer, based solely on attention mechanisms, dispensing with recurrence and convolutions entirely."
+    },
+    {
+        "original": "In this work, we focus on small models of a GPT2-small size (124M). Our findings reveal that even such modest-sized models can adeptly execute intricate arithmetic tasks.",
+        "revised": "We demonstrate that GPT2-small (124M parameters) can effectively perform complex arithmetic tasks, challenging assumptions about model size requirements.",
+        "context": "This paper investigates the arithmetic capabilities of transformer models."
+    },
+    {
+        "original": "The method is very good and achieves good results on the benchmark datasets.",
+        "revised": "Our method achieves state-of-the-art performance on three benchmark datasets, outperforming previous approaches by 5-10%.",
+        "context": "We present a novel approach for image classification."
+    }
+]

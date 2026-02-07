@@ -24,6 +24,7 @@ The models were trained on a dataset of 140,000 high-quality instruction-revisio
 - [Model Zoo](#model-zoo)
 - [Training](#training)
 - [Evaluation](#evaluation)
+- [Paper Revision Benchmark (PyPI Package)](#paper-revision-benchmark-pypi-package)
 - [Inference with Transformers](#inference-with-transformers)
 - [Model License](#model-license)
 - [Acknowledgements](#acknowledgements)
@@ -192,6 +193,80 @@ XtraGPT/
 ├── requirements.txt
 └── README.md
 ```
+
+---
+
+## Paper Revision Benchmark (PyPI Package)
+
+We provide a standalone Python package for benchmarking paper revision models. Install it directly from PyPI:
+
+```bash
+pip install paper-revision-bench
+```
+
+### Quick Start
+
+```python
+import paper_revision_bench as prb
+
+# Prepare your data
+samples = [
+    {
+        "instruction": "Improve the clarity of this title",
+        "input": "A Study of Neural Networks",
+        "output_1": "Deep Learning for Image Classification",  # Model A output
+        "output_2": "Neural Network Analysis Study",           # Model B output
+    }
+]
+
+# Run evaluation with GPT-4-Turbo as judge
+results = prb.evaluate(
+    samples=samples,
+    judge="openai/gpt-4-turbo",
+    criteria="clarity"
+)
+
+print(f"Model A win rate: {results.win_rate:.1%}")
+```
+
+### Using Paper-Specific Prompts
+
+To reproduce the exact evaluation from our paper:
+
+```python
+from paper_revision_bench import get_paper_eval_prompt, list_paper_sections
+
+# Available sections: title, abstract, introduction, background, evaluation, conclusion
+print(list_paper_sections())
+
+# Get the evaluation prompt for a specific section
+prompt = get_paper_eval_prompt("title")
+```
+
+### CLI Usage
+
+```bash
+# Evaluate from JSON file
+paper-revision-bench evaluate \
+    --input samples.json \
+    --judge openai/gpt-4-turbo \
+    --criteria clarity \
+    --output results.json
+
+# List available criteria and judges
+paper-revision-bench list-criteria
+paper-revision-bench list-judges
+```
+
+### Supported Judges
+
+| Judge | Model ID |
+|-------|----------|
+| GPT-4-Turbo | `openai/gpt-4-turbo` |
+| GPT-4o | `openai/gpt-4o` |
+| Claude 3.5 Sonnet | `anthropic/claude-3-5-sonnet-20241022` |
+| Local Ollama | `ollama/llama3` |
+| vLLM Server | `vllm/model-name` |
 
 ---
 
