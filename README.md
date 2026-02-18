@@ -126,7 +126,7 @@ cp -r ../6_component_evaluation/alpaca_eval_gpt4_turbo_fn/* \
 > **Important:** Replace `glm_winrate.py` in your AlpacaEval installation with our version, which disables the `instruction_difficulty` feature (not applicable to paper revision tasks) and keeps only length bias correction:
 >
 > ```bash
-> cp glm_winrate.py $(python -c "import alpaca_eval; print(alpaca_eval.__path__[0])")/metrics/glm_winrate.py
+> cp 6_component_evaluation/glm_winrate.py $(python -c "import alpaca_eval; print(alpaca_eval.__path__[0])")/metrics/glm_winrate.py
 > ```
 
 #### Step 2: Convert Predictions
