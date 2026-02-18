@@ -148,5 +148,30 @@ class EvaluationResult:
         df = pd.DataFrame(rows)
         df.to_csv(path, index=False, encoding="utf-8")
 
+    def length_controlled_winrate(
+        self,
+        model_name: str = "revised",
+        baseline_name: str = "original",
+        annotator: str = "paper_revision_bench",
+        glm_name: str = "length_controlled_no_instruction_difficulty",
+        save_weights_dir=None,
+    ) -> dict:
+        """Compute AlpacaEval-style length-controlled win rate.
+
+        Requires: pip install paper-revision-bench[alpaca]
+
+        Returns:
+            dict with keys: win_rate, length_controlled_winrate, lc_standard_error
+        """
+        from paper_revision_bench.metrics import get_length_controlled_winrate
+        return get_length_controlled_winrate(
+            result=self,
+            model_name=model_name,
+            baseline_name=baseline_name,
+            annotator=annotator,
+            glm_name=glm_name,
+            save_weights_dir=save_weights_dir,
+        )
+
     def __repr__(self) -> str:
         return f"EvaluationResult(win_rate={self.win_rate:.1%}, total={self.total})"

@@ -50,12 +50,12 @@ pip install llamafactory
 
 ## Model Zoo
 
-| Model | Size | HuggingFace |
-|-------|------|-------------|
+| Model        | Size | HuggingFace                                             |
+| ------------ | ---- | ------------------------------------------------------- |
 | XtraGPT-1.5B | 1.5B | [Link](https://huggingface.co/Xtra-Computing/XtraGPT-1.5B) |
-| XtraGPT-3B | 3B | [Link](https://huggingface.co/Xtra-Computing/XtraGPT-3B) |
-| XtraGPT-7B | 7B | [Link](https://huggingface.co/Xtra-Computing/XtraGPT-7B) |
-| XtraGPT-14B | 14B | [Link](https://huggingface.co/Xtra-Computing/XtraGPT-14B) |
+| XtraGPT-3B   | 3B   | [Link](https://huggingface.co/Xtra-Computing/XtraGPT-3B)   |
+| XtraGPT-7B   | 7B   | [Link](https://huggingface.co/Xtra-Computing/XtraGPT-7B)   |
+| XtraGPT-14B  | 14B  | [Link](https://huggingface.co/Xtra-Computing/XtraGPT-14B)  |
 
 ---
 
@@ -92,14 +92,14 @@ llamafactory-cli train configs/train_config.yaml
 
 Key hyperparameters (from paper):
 
-| Parameter | Value |
-|-----------|-------|
-| Learning Rate | 1e-6 |
-| Epochs | 4 |
-| Batch Size | 1 (per device) |
-| Gradient Accumulation | 4 |
-| Max Length | 16384 |
-| Warmup Ratio | 0.1 |
+| Parameter             | Value          |
+| --------------------- | -------------- |
+| Learning Rate         | 1e-6           |
+| Epochs                | 4              |
+| Batch Size            | 1 (per device) |
+| Gradient Accumulation | 4              |
+| Max Length            | 16384          |
+| Warmup Ratio          | 0.1            |
 
 ---
 
@@ -122,6 +122,12 @@ cd alpaca_eval && pip install -e .
 cp -r ../6_component_evaluation/alpaca_eval_gpt4_turbo_fn/* \
     src/alpaca_eval/evaluators_configs/alpaca_eval_gpt4_turbo_fn/
 ```
+
+> **Important:** Replace `glm_winrate.py` in your AlpacaEval installation with our version, which disables the `instruction_difficulty` feature (not applicable to paper revision tasks) and keeps only length bias correction:
+>
+> ```bash
+> cp glm_winrate.py $(python -c "import alpaca_eval; print(alpaca_eval.__path__[0])")/metrics/glm_winrate.py
+> ```
 
 #### Step 2: Convert Predictions
 
@@ -260,13 +266,15 @@ paper-revision-bench list-judges
 
 ### Supported Judges
 
-| Judge | Model ID |
-|-------|----------|
-| GPT-4-Turbo | `openai/gpt-4-turbo` |
-| GPT-4o | `openai/gpt-4o` |
+| Judge             | Model ID                                 |
+| ----------------- | ---------------------------------------- |
+| GPT-4-Turbo       | `openai/gpt-4-turbo`                   |
+| GPT-4o            | `openai/gpt-4o`                        |
 | Claude 3.5 Sonnet | `anthropic/claude-3-5-sonnet-20241022` |
-| Local Ollama | `ollama/llama3` |
-| vLLM Server | `vllm/model-name` |
+| Local Ollama      | `ollama/llama3`                        |
+| vLLM Server       | `vllm/model-name`                      |
+
+For advanced usage (length-controlled win rate, weighted overall score across sections), see the [package README](paper_revision_bench/README.md).
 
 ---
 

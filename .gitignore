@@ -63,6 +63,19 @@ runs/
 *.jsonl
 !examples/*.jsonl
 
+# Local-only files (not synced to remote)
+6_component_evaluation/run_scorer.sh
+6_component_evaluation/change_to_json_new.py
+6_component_evaluation/convert.py
+full_paper_evaluation/ai_scientist.py
+full_paper_evaluation/analyze_improvement.py
+full_paper_evaluation/plot.py
+full_paper_evaluation/validate_ai_scientist.py
+train/run_converter.sh
+train/run_prediction.sh
+.history/
+Untitled
+
 # Secrets
 .env.local
 *.key

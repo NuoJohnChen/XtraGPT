@@ -3,8 +3,7 @@ Reproduce XtraGPT vs Qwen2.5-7B-Instruct results from the paper using paper-revi
 """
 
 import json
-import sys
-sys.path.insert(0, '/shared/hdd/andre/predictions/claude_try/paper_revision_bench')
+import os
 
 from paper_revision_bench import evaluate
 
@@ -24,16 +23,17 @@ def load_predictions(model_path, section, limit=10):
 # Load prompts (as original text baseline)
 def load_prompts(section, limit=10):
     """Load original prompts."""
-    filepath = f"/shared/hdd/andre/predictions/formatted/prompts_noexplain/{section}.json"
+    prompts_dir = os.environ.get("PROMPTS_DIR", "./predictions/formatted/prompts_noexplain")
+    filepath = f"{prompts_dir}/{section}.json"
     with open(filepath, 'r') as f:
         prompts = json.load(f)
     return prompts[:limit]
 
 
 def main():
-    # Paths
-    xtragpt_path = "/shared/hdd/andre/predictions/XtraGPT-1.5B"
-    baseline_path = "/shared/hdd/andre/predictions/experimental/Qwen2.5-7B-Instruct-noexplain"
+    # Paths (set via env vars or edit these lines)
+    xtragpt_path = os.environ.get("XTRAGPT_PREDICTIONS_PATH", "./predictions/XtraGPT-1.5B")
+    baseline_path = os.environ.get("BASELINE_PREDICTIONS_PATH", "./predictions/Qwen2.5-7B-Instruct")
 
     # Test on title section (smallest, 700 samples total)
     section = "title"

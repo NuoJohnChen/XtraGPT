@@ -1,6 +1,6 @@
 # Paper Revision Bench
 
-A Python package for benchmarking paper revision quality using LLM-as-a-judge.
+A Python package for benchmarking paper revision quality, using the exact evaluation methodology from the XtraGPT paper.
 
 [![PyPI version](https://badge.fury.io/py/paper-revision-bench.svg)](https://badge.fury.io/py/paper-revision-bench)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
@@ -19,21 +19,24 @@ from paper_revision_bench import evaluate
 results = evaluate(
     original_texts=["The dominant sequence transduction models are based on complex recurrent or convolutional neural networks."],
     revised_texts=["Sequence transduction models typically use complex RNNs or CNNs."],
-    judge_model="gpt-4-turbo",
+    section="abstract",
+    judge_model="gpt-4-1106-preview",  # matches paper
     api_key="sk-xxx",  # or set OPENAI_API_KEY env var
 )
 
 print(f"Win Rate: {results.win_rate:.1%}")
-print(f"Details: {results.summary()}")
+print(results.summary())
 ```
 
-## Features
+## How It Works
 
-- **Multiple Judge Models**: OpenAI, Anthropic, local models via vLLM/Ollama
-- **6 Paper Sections**: Title, Abstract, Introduction, Background, Evaluation, Conclusion
-- **20 Evaluation Criteria**: Conciseness, clarity, impact, coherence, etc.
-- **Async Batch Processing**: Fast evaluation of large datasets
-- **Detailed Reports**: Win/lose/tie breakdown, per-sample scores
+The evaluation uses AlpacaEval's function calling format, exactly as in the paper:
+
+1. GPT-4-Turbo receives both texts and ranks them via the `make_partial_leaderboard` function call
+2. Section-specific criteria (20 total across 6 sections) guide the ranking
+3. The result is a win/lose/tie for the revised text vs the original
+
+`original_texts` maps to model `"m"` (output_1), `revised_texts` maps to model `"M"` (output_2).
 
 ## Usage
 
@@ -45,32 +48,13 @@ from paper_revision_bench import evaluate
 results = evaluate(
     original_texts=["Original text 1", "Original text 2"],
     revised_texts=["Revised text 1", "Revised text 2"],
-    contexts=["Full paper 1", "Full paper 2"],  # optional
+    instructions=["Improve clarity", "Improve clarity"],  # optional
     section="abstract",  # title, abstract, introduction, background, evaluation, conclusion
-    criterion="conciseness",  # or "clarity", "impact", etc.
-    judge_model="gpt-4-turbo",
+    judge_model="gpt-4-1106-preview",
 )
 ```
 
-### Using Different Judge Models
-
-```python
-from paper_revision_bench import evaluate
-
-# OpenAI
-results = evaluate(..., judge_model="gpt-4-turbo", api_key="sk-xxx")
-
-# Anthropic
-results = evaluate(..., judge_model="claude-3-opus", api_key="sk-ant-xxx")
-
-# Local model via Ollama
-results = evaluate(..., judge_model="ollama/llama3:70b", api_base="http://localhost:11434")
-
-# Local model via vLLM
-results = evaluate(..., judge_model="vllm/meta-llama/Llama-3-70b", api_base="http://localhost:8000")
-```
-
-### Batch Evaluation with Async
+### Async Batch Evaluation
 
 ```python
 from paper_revision_bench import evaluate_async
@@ -80,8 +64,7 @@ async def main():
     results = await evaluate_async(
         original_texts=large_original_list,
         revised_texts=large_revised_list,
-        judge_model="gpt-4-turbo",
-        batch_size=10,
+        section="introduction",
         max_concurrent=5,
     )
     print(results.summary())
@@ -94,69 +77,75 @@ asyncio.run(main())
 ```python
 results = evaluate(...)
 
-# Summary statistics
-print(results.win_rate)        # 0.85
-print(results.lose_rate)       # 0.10
-print(results.tie_rate)        # 0.05
+print(results.win_rate)    # 0.85
+print(results.lose_rate)   # 0.10
+print(results.tie_rate)    # 0.05
 
-# Per-sample details
 for detail in results.details:
     print(f"Sample {detail.index}: {detail.winner} - {detail.explanation}")
 
-# Export report
 results.to_json("report.json")
 results.to_csv("report.csv")
 ```
 
-### Available Criteria
+### Weighted Overall Score
+
+The paper computes an overall win rate as a weighted average across 6 sections (title:abstract:introduction:background:evaluation:conclusion = 2:4:6:3:3:2):
 
 ```python
-from paper_revision_bench import list_criteria, list_sections
+from paper_revision_bench import evaluate, compute_weighted_overall
 
-print(list_sections())
-# ['title', 'abstract', 'introduction', 'background', 'evaluation', 'conclusion']
+section_results = {}
+for section in ["title", "abstract", "introduction", "background", "evaluation", "conclusion"]:
+    section_results[section] = evaluate(
+        original_texts=original_list,
+        revised_texts=revised_list,
+        section=section,
+    )
 
-print(list_criteria("abstract"))
-# ['conciseness', 'clarity', 'impact', 'completeness', 'coherence', ...]
+overall = compute_weighted_overall(section_results)
+print(f"Overall Win Rate: {overall['weighted_win_rate']:.1%}")
 ```
+
+### Length-Controlled Win Rate
+
+To reproduce the paper's length-controlled win rate (corrects for length bias via GLM):
+
+```bash
+pip install paper-revision-bench[alpaca]
+```
+
+```python
+lc = results.length_controlled_winrate(model_name="XtraGPT-7B", baseline_name="original")
+print(f"LC Win Rate: {lc['length_controlled_winrate']:.1f}% ± {lc['lc_standard_error']:.1f}%")
+```
+
+First call downloads ~50KB of data from HuggingFace to `~/.cache/alpaca_eval/`.
 
 ## API Reference
 
 ### `evaluate()`
 
-Main evaluation function.
-
 **Parameters:**
-- `original_texts` (List[str]): Original texts before revision
-- `revised_texts` (List[str]): Revised texts after revision
-- `contexts` (List[str], optional): Full paper contexts
-- `section` (str, optional): Paper section type. Default: "abstract"
-- `criterion` (str, optional): Evaluation criterion. Default: "overall"
-- `judge_model` (str): Model to use as judge
-- `api_key` (str, optional): API key (or use env var)
-- `api_base` (str, optional): API base URL for local models
-- `temperature` (float): Judge temperature. Default: 0.0
-- `max_tokens` (int): Max tokens for judge response. Default: 1024
+- `original_texts` (List[str]): Baseline texts (model "m" / output_1)
+- `revised_texts` (List[str]): Model outputs to evaluate (model "M" / output_2)
+- `instructions` (List[str], optional): Revision instructions per sample
+- `section` (str): Paper section. Default: `"abstract"`
+- `judge_model` (str): OpenAI model. Default: `"gpt-4-1106-preview"` (matches paper)
+- `api_key` (str, optional): OpenAI API key (or set `OPENAI_API_KEY`)
+- `temperature` (float): Default: `0.0`
+- `max_tokens` (int): Default: `200` (matches paper)
+- `max_concurrent` (int): Concurrent API calls. Default: `5`
 
-**Returns:** `EvaluationResult` object
+**Returns:** `EvaluationResult`
 
 ### `EvaluationResult`
 
-**Attributes:**
-- `win_rate` (float): Proportion of wins for revised text
-- `lose_rate` (float): Proportion of losses
-- `tie_rate` (float): Proportion of ties
-- `details` (List[SampleResult]): Per-sample results
-- `metadata` (dict): Evaluation metadata
+**Attributes:** `win_rate`, `lose_rate`, `tie_rate`, `average_score`, `n_wins`, `n_losses`, `n_ties`, `total`, `details`, `metadata`
 
-**Methods:**
-- `summary()`: Return summary string
-- `to_json(path)`: Export to JSON
-- `to_csv(path)`: Export to CSV
+**Methods:** `summary()`, `to_json(path)`, `to_csv(path)`, `length_controlled_winrate(...)`
 
 ## Citation
-
-If you use this package, please cite:
 
 ```bibtex
 @misc{nuo2025xtragpt,

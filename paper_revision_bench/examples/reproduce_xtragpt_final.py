@@ -3,9 +3,8 @@ Reproduce XtraGPT vs Original Text results - with more samples and clean data
 """
 
 import json
+import os
 import re
-import sys
-sys.path.insert(0, '/shared/hdd/andre/predictions/claude_try/paper_revision_bench')
 
 from paper_revision_bench import evaluate
 
@@ -42,8 +41,8 @@ def load_predictions_with_labels(model_path, section, limit=50):
 
 
 def main():
-    # Path to XtraGPT predictions
-    xtragpt_path = "/shared/hdd/andre/predictions/XtraGPT-1.5B"
+    # Path to XtraGPT predictions (set via env var or edit this line)
+    xtragpt_path = os.environ.get("XTRAGPT_PREDICTIONS_PATH", "./predictions/XtraGPT-1.5B")
 
     # Test on title section
     section = "title"

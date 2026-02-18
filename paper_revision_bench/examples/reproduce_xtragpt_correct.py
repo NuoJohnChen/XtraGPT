@@ -5,8 +5,7 @@ Paper methodology: Compare model's revised output against the ORIGINAL text (bef
 """
 
 import json
-import sys
-sys.path.insert(0, '/shared/hdd/andre/predictions/claude_try/paper_revision_bench')
+import os
 
 from paper_revision_bench import evaluate
 
@@ -27,8 +26,8 @@ def load_predictions_with_labels(model_path, section, limit=10):
 
 
 def main():
-    # Path to XtraGPT predictions
-    xtragpt_path = "/shared/hdd/andre/predictions/XtraGPT-1.5B"
+    # Path to XtraGPT predictions (set via env var or edit this line)
+    xtragpt_path = os.environ.get("XTRAGPT_PREDICTIONS_PATH", "./predictions/XtraGPT-1.5B")
 
     # Test on title section
     section = "title"
