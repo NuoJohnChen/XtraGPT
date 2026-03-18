@@ -6,14 +6,14 @@ provider:
   description: Local OpenAI-compatible endpoint serving XtraGPT for academic paper revision.
 
 connection:
-  base_url: http://127.0.0.1:8000/v1
+  base_url: http://127.0.0.1:8088/v1
   api_key: ${XTRAGPT_API_KEY:-dummy}
   timeout_seconds: 300
 
 models:
   - id: xtragpt-7b
     provider_model_name: Xtra-Computing/XtraGPT-7B
-    display_name: XtraGPT 7B
+    display_name: XtraGPT-7B
     mode: chat
     capabilities:
       input_text: true
@@ -30,4 +30,4 @@ models:
 
 fallback:
   enabled: true
-  fallback_model: ${DEFAULT_FALLBACK_MODEL:-gpt-4.1-mini}
+  fallback_model: ${DEFAULT_FALLBACK_MODEL:-gpt-5.2}
