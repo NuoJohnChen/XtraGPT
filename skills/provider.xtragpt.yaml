@@ -6,7 +6,7 @@ provider:
   description: Local OpenAI-compatible endpoint serving XtraGPT for academic paper revision.
 
 connection:
-  base_url: http://127.0.0.1:8088/v1
+  base_url: ${XTRAGPT_BASE_URL:-http://127.0.0.1:8088/v1}
   api_key: ${XTRAGPT_API_KEY:-dummy}
   timeout_seconds: 300
 
