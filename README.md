@@ -26,6 +26,7 @@ The models were trained on a dataset of 140,000 high-quality instruction-revisio
 - [Evaluation](#evaluation)
 - [Paper Revision Benchmark (PyPI Package)](#paper-revision-benchmark-pypi-package)
 - [Inference with Transformers](#inference-with-transformers)
+- [Production Usage (OpenClaw Integration)](#production-usage-openclaw-integration)
 - [Model License](#model-license)
 - [Acknowledgements](#acknowledgements)
 - [Citation](#citation)
@@ -196,6 +197,8 @@ XtraGPT/
 │   └── README.md
 ├── examples/
 │   └── inference_example.py
+├── skills/
+│   └── skill.paper_revision_specialist.yaml
 ├── requirements.txt
 └── README.md
 ```
@@ -349,6 +352,138 @@ generated_ids = [
 response = tokenizer.batch_decode(generated_ids, skip_special_tokens=True)[0]
 print(response)
 ```
+
+---
+## Production Usage (OpenClaw Integration)
+
+XtraGPT can be used as a **specialized academic writing backend** in agent systems such as OpenClaw, Cursor, or custom research workflows.
+
+Unlike general-purpose LLMs, XtraGPT is optimized for **high-precision, context-aware paper revision**, and is best used as a **dedicated revision module** that is automatically invoked when needed.
+
+---
+
+### Quick Setup
+
+To integrate XtraGPT into your system:
+
+1. Serve XtraGPT locally (e.g., via vLLM, SGLang, or Ollama)
+2. Register it as a model provider (OpenAI-compatible endpoint recommended)
+3. Add the `paper_revision_specialist` skill
+4. Enable routing rules for academic editing tasks
+
+👉 Once configured, the system will **automatically dispatch paper revision requests to XtraGPT**, without requiring users to manually select models or follow any special prompt format.
+
+For model access and deployment references, see:
+[https://huggingface.co/Xtra-Computing/XtraGPT-7B](https://huggingface.co/Xtra-Computing/XtraGPT-7B)
+
+---
+
+### How It Works
+
+In a typical workflow:
+
+```text
+User request
+   ↓
+Agent router detects "revision intent"
+   ↓
+paper_revision_specialist skill
+   ↓
+XtraGPT (local inference)
+   ↓
+Revised academic text
+```
+
+The routing layer automatically activates XtraGPT when the user asks to:
+
+* rewrite or polish paragraphs
+* improve clarity or conciseness
+* refine academic tone
+* strengthen logical flow
+* revise rebuttals or reviewer responses
+* reduce overclaim or improve defensibility
+
+No special formatting or prompt engineering is required from the user.
+
+---
+
+### What XtraGPT Is Designed For
+
+XtraGPT is specifically optimized for:
+
+* Abstract, Introduction, Conclusion rewriting
+* Section-level clarity and coherence improvement
+* Reviewer rebuttal refinement
+* Academic tone alignment (ACL / NeurIPS / ICML style)
+* Reducing redundancy and overclaim
+* Maintaining consistency with the full paper context
+
+---
+
+### What XtraGPT Is NOT Designed For
+
+XtraGPT is not intended to replace general-purpose models. It is not suitable for:
+
+* open-domain conversation
+* coding or debugging
+* factual Q&A or search
+* early-stage brainstorming without text
+
+In practice, XtraGPT should be used **alongside a general LLM**, not as a replacement.
+
+---
+
+## Why Use a Specialized Revision Model?
+
+A common question is:
+*Why not just use GPT-4 / Claude for paper editing?*
+
+### Limitations of General LLMs
+
+General-purpose models often:
+
+* perform **surface-level rewriting** without respecting global context
+* introduce **overclaim or vague phrasing**
+* fail to align edits with **section-specific conventions**
+* produce inconsistent tone across different parts of the paper
+* lack controllability when given precise revision instructions
+
+---
+
+### What XtraGPT Does Differently
+
+XtraGPT is trained specifically for academic revision, which enables:
+
+* **Context-aware editing**
+  Maintains consistency with the full paper, not just the local paragraph
+
+* **Instruction-following for writing criteria**
+  Supports fine-grained control (clarity, conciseness, defensibility, etc.)
+
+* **Section-aware behavior**
+  Adapts rewriting style depending on whether the input is an abstract, introduction, or evaluation section
+
+* **Reduced overclaim and hallucination risk**
+  Optimized to avoid introducing unsupported claims or exaggeration
+
+* **Stable iterative refinement**
+  Designed for multi-step human-AI editing workflows (HAC)
+
+---
+
+### Recommended Usage Pattern
+
+The most effective setup is a **hybrid system**:
+
+```text
+General LLM → idea generation / reasoning / drafting  
+XtraGPT     → controlled revision / polishing / refinement
+```
+
+This separation provides both:
+
+* **creativity and flexibility** (general models)
+* **precision and reliability** (XtraGPT)
 
 ---
 
