@@ -9,6 +9,7 @@
 **XtraGPT** is a family of open-source Large Language Models (LLMs) designed specifically for **human-AI collaborative academic paper revision**. Unlike general-purpose models that often perform surface-level polishing, XtraGPT is fine-tuned to **understand the full context** of a research paper and execute specific, **criteria-guided** revision instructions. XtraGPT is the refiner of [Friend Project: PaperDebugger](https://github.com/PaperDebugger/paperdebugger)
 
 The models were trained on a dataset of 140,000 high-quality instruction-revision pairs derived from top-tier conference papers (ICLR).
+XtraGPT is designed to be easily integrated into agent systems, enabling automatic routing of in-context academic revision tasks (e.g., via skills such as `paper_revision_specialist`).
 
 **Key Features:**
 
@@ -369,9 +370,9 @@ To integrate XtraGPT into your system:
 1. Serve XtraGPT locally (e.g., via vLLM, SGLang, or Ollama)
 2. Register it as a model provider (OpenAI-compatible endpoint recommended)
 3. Add the `paper_revision_specialist` skill
-4. Enable routing rules for academic editing tasks
+4. Enable routing rules for academic editing
 
-👉 Once configured, the system will **automatically dispatch paper revision requests to XtraGPT**, without requiring users to manually select models or follow any special prompt format.
+👉 The system will then **automatically dispatch paper revision requests to XtraGPT**, with no special prompting required.
 
 For model access and deployment references, see:
 [https://huggingface.co/Xtra-Computing/XtraGPT-7B](https://huggingface.co/Xtra-Computing/XtraGPT-7B)
@@ -389,102 +390,71 @@ Agent router detects "revision intent"
    ↓
 paper_revision_specialist skill
    ↓
-XtraGPT (local inference)
+XtraGPT
    ↓
 Revised academic text
 ```
 
-The routing layer automatically activates XtraGPT when the user asks to:
+---
 
-* rewrite or polish paragraphs
-* improve clarity or conciseness
-* refine academic tone
-* strengthen logical flow
-* revise rebuttals or reviewer responses
-* reduce overclaim or improve defensibility
+### Example Requests That Auto-Route to XtraGPT
 
-No special formatting or prompt engineering is required from the user.
+"Rewrite this motivation paragraph so it clearly reflects the research gap stated in the abstract."
+"Revise this introduction to better align with our claimed contributions and avoid inconsistency."
+"Improve this paragraph by incorporating the experimental findings mentioned later in the paper."
+"This section sounds fluent but unconvincing, strengthen the argument using the paper’s overall narrative."
+"Make this contribution paragraph more precise and ensure it matches what we actually evaluate in Section 4."
+"Reduce overclaim in this paragraph while keeping it aligned with the evidence presented in the paper."
 
 ---
 
-### What XtraGPT Is Designed For
+### When to Use XtraGPT
 
-XtraGPT is specifically optimized for:
+Best suited for **instruction-driven, in-context revision tasks**, such as:
 
-* Abstract, Introduction, Conclusion rewriting
-* Section-level clarity and coherence improvement
-* Reviewer rebuttal refinement
-* Academic tone alignment (ACL / NeurIPS / ICML style)
-* Reducing redundancy and overclaim
-* Maintaining consistency with the full paper context
+* aligning a paragraph with the paper’s overall narrative (e.g., abstract, contributions, or results)
+* revising content to satisfy specific writing criteria (e.g., strengthen motivation, reduce overclaim)
+* ensuring consistency across sections (e.g., introduction ↔ evaluation ↔ conclusion)
+* refining rebuttals using evidence grounded in the paper
 
----
+Not intended for:
 
-### What XtraGPT Is NOT Designed For
-
-XtraGPT is not intended to replace general-purpose models. It is not suitable for:
-
-* open-domain conversation
+* open-ended conversation or brainstorming
 * coding or debugging
-* factual Q&A or search
-* early-stage brainstorming without text
+* factual Q&A or retrieval tasks
 
 In practice, XtraGPT should be used **alongside a general LLM**, not as a replacement.
 
 ---
 
-## Why Use a Specialized Revision Model?
+### Why Not Use a General LLM?
 
-A common question is:
-*Why not just use GPT-4 / Claude for paper editing?*
+General-purpose LLMs typically operate at the **local text level**, which leads to:
 
-### Limitations of General LLMs
-
-General-purpose models often:
-
-* perform **surface-level rewriting** without respecting global context
-* introduce **overclaim or vague phrasing**
-* fail to align edits with **section-specific conventions**
-* produce inconsistent tone across different parts of the paper
-* lack controllability when given precise revision instructions
+* fluent but **unconvincing or misaligned revisions**
+* weak handling of **cross-section dependencies**
+* limited ability to follow **structured writing criteria**
+* tendency to introduce **overclaim or generic phrasing**
 
 ---
 
 ### What XtraGPT Does Differently
 
-XtraGPT is trained specifically for academic revision, which enables:
+XtraGPT is trained for **controllable, context-aware revision**, enabling:
 
-* **Context-aware editing**
-  Maintains consistency with the full paper, not just the local paragraph
-
-* **Instruction-following for writing criteria**
-  Supports fine-grained control (clarity, conciseness, defensibility, etc.)
-
-* **Section-aware behavior**
-  Adapts rewriting style depending on whether the input is an abstract, introduction, or evaluation section
-
-* **Reduced overclaim and hallucination risk**
-  Optimized to avoid introducing unsupported claims or exaggeration
-
-* **Stable iterative refinement**
-  Designed for multi-step human-AI editing workflows (HAC)
+* revisions grounded in the **full paper context**, not just local text
+* alignment with **explicit user instructions and writing criteria**
+* consistent argumentation across sections
+* more **defensible and academically faithful** outputs
 
 ---
 
 ### Recommended Usage Pattern
 
-The most effective setup is a **hybrid system**:
-
 ```text
-General LLM → idea generation / reasoning / drafting  
-XtraGPT     → controlled revision / polishing / refinement
+General LLM → drafting / reasoning  
+XtraGPT     → in-context revision / alignment
 ```
-
-This separation provides both:
-
-* **creativity and flexibility** (general models)
-* **precision and reliability** (XtraGPT)
-
 ---
 
 ## Model License
