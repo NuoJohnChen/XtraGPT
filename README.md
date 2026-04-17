@@ -29,6 +29,7 @@ XtraGPT is designed to be easily integrated into agent systems, enabling automat
 - [Inference with Transformers](#inference-with-transformers)
 - [Production Usage (OpenClaw Integration)](#production-usage-openclaw-integration)
 - [Model License](#model-license)
+- [Broader Impact](#broader-impact)
 - [Acknowledgements](#acknowledgements)
 - [Citation](#citation)
 
@@ -488,6 +489,20 @@ This model is released under the **ModelGo Zero License 2.0 (MG0-2.0)**.
 MG0-2.0 is a highly permissive open model license designed to facilitate the widest possible adoption and collaboration. It allows for **unrestricted use**, reproduction, distribution, and the creation of derivative works including for commercial purposes, without requiring attribution or imposing copyleft restrictions.
 
 For more details on the license terms, please visit [ModelGo.li](https://www.modelgo.li/) or refer to the `LICENSE` file in the repository.
+
+---
+
+## Broader Impact
+
+The future of AI-assisted academic research raises critical concerns. We analyze these concerns from the perspective of **XtraGPT**.
+
+- **Potential for Human Researcher Passivity**: One widespread concern is the potential for over-reliance on AI, leading to diminished human effort, creativity, and critical thinking, as AI could handle various stages such as idea generation, writing, and reviewing. Our framework, however, adheres to a human-AI collaboration paradigm in which the human researcher retains agency and control. Authors are required to have strong motivation to generate core ideas and initial drafts, reflecting their intellectual investment and desire for recognition. This collaborative process can be viewed as a positive *feedback loop*: the AI’s assistance in refining the presentation of core ideas through revisions can, via psychological phenomena such as the *self-fulfilling prophecy*, *reinforce* the human author’s motivation and drive for high-quality output. This fosters a virtuous cycle that encourages authors to be more active and engaged in producing and refining their work, rather than becoming passive.
+
+- **Proliferation of Low-Quality Papers and Quantity Inflation**: AI, particularly in uncontrolled end-to-end generation scenarios, poses a risk of enabling the mass production of low-quality or superficially polished papers, potentially inflating publication numbers without commensurate scientific value. In our framework, the AI functions as an assistant specifically for improving existing drafts based on explicit instructions and established writing criteria, such as those informed by academic guides. The initial effort required from the human author to develop high-quality ideas and preliminary drafts is significant and remains a crucial and valuable step that underpins the current positive development of the research community. **XtraGPT** is designed to help authors present their already valuable work more effectively and rigorously, implicitly discouraging the dissemination of poorly conceived work and supporting the critical refinement process that characterizes high-quality academic output, thereby helping the community manage article quality rather than promoting quantity over substance.
+
+- **Misalignment with Human Values and Scientific Principles**: Concerns exist that AI might generate content that deviates from human researchers’ values, core scientific principles, ethical considerations, or specific conference norms. **XtraGPT**’s emphasis on controllability and instruction-following is designed to mitigate this risk. The model is trained and operates under constraints that aim to keep it closely aligned with the human author’s core intent and the integrity of the original manuscript. In every collaborative interaction, the human author maintains overall judgment and intellectual control, ensuring that the final revised content reflects their will and adheres to academic standards and ethical guidelines, which are implicitly learned from the training data and explicitly guided by user instructions.
+
+This work specifically targets the iterative process of paper revision, which is crucial for refining scientific communication, and aims to offer novel insights and tools to the community. We strongly advocate for increased attention to the ability of large models to adhere to core scientific principles and community standards, and emphasize that evaluation metrics for AI in academic assistance should move beyond traditional natural language processing scores to incorporate measures of adherence to these critical norms and principles. This consideration is vital for the responsible development and deployment of AI across all research assistance tasks.
 
 ---
 
