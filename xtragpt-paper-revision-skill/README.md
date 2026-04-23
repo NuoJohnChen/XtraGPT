@@ -95,3 +95,34 @@ Xtra-Computing/XtraGPT-7B
 2. Install and initialize this package.
 3. Include the generated provider, skill, and router YAML files in your OpenClaw project.
 4. Keep your GitHub repo as the main documentation hub for deployment details, examples, and paper framing.
+
+## Live demo
+
+End-to-end recording of this skill driving a real OpenClaw install, comparing XtraGPT-7B against its base model (Qwen2.5-7B-Instruct) and a much larger general-purpose LLM (GLM-5.1) on the same paper-revision task:
+
+![demo](../tests/openclaw-demo/demo.gif)
+
+Full side-by-side output: [`tests/openclaw-demo/outputs/before_after.md`](../tests/openclaw-demo/outputs/before_after.md)
+
+Reproduce the demo locally:
+
+```bash
+# from repo root
+bash tests/openclaw-demo/start_vllm.sh          # serves XtraGPT-7B on :8088 and Qwen2.5-7B on :8089
+python tests/openclaw-demo/run_demo.py          # runs the three backends with the skill's prompt template
+asciinema play tests/openclaw-demo/demo.cast    # replay the recorded session
+```
+
+Input paper: e.g. [DRBO](https://aclanthology.org/2025.findings-emnlp.468.pdf). Backends receive the identical skill-rendered prompt (temperature 0.1, max_tokens 1024).
+
+Observed on the DRBO paper's abstract + introduction:
+
+| Backend | Latency | Output tokens | Notes |
+| --- | --- | --- | --- |
+| XtraGPT-7B (local) | 2.0 – 2.8 s | 149 – 225 | Concise, no meta-wrapping, keeps citations intact |
+| Qwen2.5-7B base (local) | 2.0 – 3.5 s | 152 – 274 | Same capacity as XtraGPT but wraps output in `Revised text:` / `Revision notes:` boilerplate |
+| GLM-5.1 (z.ai) | 10 – 24 s | 242 | Fluent but wordier; 5–12× slower |
+
+### Integration note
+
+The npm package scaffolds provider / skill / router YAML into `openclaw/`, but as of OpenClaw 2026.3.2 the `openclaw skills list` command resolves skills from npm plugins only, so the scaffolded YAML is not auto-ingested. The demo driver (`run_demo.py`) loads the scaffolded `skill.xtragpt-paper-revision-skill.yaml` directly to render the prompt template, which is the actual contract surface. A future release of this package should register a proper OpenClaw plugin so `openclaw skills list` picks it up.

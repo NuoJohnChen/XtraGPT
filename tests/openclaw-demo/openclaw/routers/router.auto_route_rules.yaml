@@ -1,0 +1,79 @@
+version: 1
+router:
+  default_model: ${DEFAULT_CHAT_MODEL:-gpt-4.1}
+  rules:
+    - id: use-xtragpt-paper-revision-skill
+      enabled: true
+      description: Route academic editing and paper-revision requests to XtraGPT.
+      when_all:
+        - any_keyword:
+            - revise
+            - rewrite
+            - polish
+            - edit
+            - improve
+            - refine
+            - shorten
+            - compress
+            - clarify
+            - strengthen
+            - tighten
+            - rephrase
+            - reword
+            - concise
+            - clearer
+            - overclaim
+            - flow
+            - coherence
+        - any_keyword:
+            - abstract
+            - introduction
+            - background
+            - related work
+            - method
+            - methodology
+            - evaluation
+            - discussion
+            - conclusion
+            - limitation
+            - rebuttal
+            - reviewer response
+            - contribution
+            - manuscript
+            - paper draft
+            - paragraph
+            - section
+            - paper
+      unless_any:
+        - any_keyword:
+            - summarize
+            - explain
+            - search
+            - related papers
+            - code
+            - debug
+            - email
+            - schedule
+            - travel
+      action:
+        type: invoke_skill
+        skill_id: xtragpt-paper-revision-skill
+
+    - id: direct-selected-text-edit
+      enabled: true
+      description: Route pasted academic text with explicit edit intent even when section name is omitted.
+      when_all:
+        - min_text_length: 300
+        - any_keyword:
+            - make this more concise
+            - make this clearer
+            - improve this
+            - revise this
+            - rewrite this
+            - polish this
+            - reduce overclaim
+            - academic tone
+            - preserve meaning
+      action:
+        type: invoke_skill
+        skill_id: xtragpt-paper-revision-skill

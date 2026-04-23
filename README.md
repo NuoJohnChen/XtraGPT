@@ -17,6 +17,8 @@ XtraGPT is designed to be easily integrated into agent systems, enabling automat
 * **Controllable:** Follows specific user instructions aligned with 20 academic writing criteria across 6 sections (Abstract, Introduction, etc.).
 * **Iterative Workflow:** Designed to support the "Human-AI Collaborative" (HAC) lifecycle where authors retain creative control.
 
+![demo](./tests/openclaw-demo/demo.gif)
+
 ---
 
 ## Table of Contents

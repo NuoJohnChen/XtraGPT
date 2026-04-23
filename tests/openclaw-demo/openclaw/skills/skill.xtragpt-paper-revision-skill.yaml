@@ -1,0 +1,163 @@
+version: 1
+skill:
+  id: xtragpt-paper-revision-skill
+  display_name: XtraGPT Paper Revision Skill
+  description: >-
+    A specialized academic paper revision skill backed by XtraGPT. It is intended
+    for revising abstracts, introductions, methods, evaluation sections,
+    conclusions, rebuttals, and reviewer responses while preserving technical
+    meaning and paper-level consistency.
+  enabled: true
+
+routing:
+  auto_invoke: true
+  priority: 90
+  stop_after_match: true
+  positive_triggers:
+    verbs:
+      - revise
+      - rewrite
+      - polish
+      - edit
+      - improve
+      - refine
+      - shorten
+      - compress
+      - clarify
+      - strengthen
+      - tighten
+      - rephrase
+      - reword
+      - make more concise
+      - make clearer
+      - reduce overclaim
+      - improve flow
+      - improve coherence
+    academic_targets:
+      - title
+      - abstract
+      - introduction
+      - background
+      - related work
+      - method
+      - methodology
+      - experiment
+      - evaluation
+      - discussion
+      - conclusion
+      - limitation
+      - rebuttal
+      - reviewer response
+      - contribution paragraph
+      - paper paragraph
+      - manuscript
+      - paper draft
+      - section
+    constraints:
+      - preserve meaning
+      - keep technical details
+      - more academic
+      - more concise
+      - clearer
+      - less repetitive
+      - stronger motivation
+      - better transition
+      - remove hype
+      - ACL style
+      - NeurIPS style
+      - ICML style
+  negative_triggers:
+    - literature search
+    - related papers
+    - summarize this paper
+    - explain this paper
+    - coding help
+    - debug this code
+    - schedule
+    - email draft
+    - logistics
+    - brainstorming only
+
+model_selection:
+  preferred_provider: xtragpt-local
+  preferred_model: xtragpt-7b
+  allow_fallback: true
+
+context_packing:
+  include_in_order:
+    - paper_title
+    - abstract
+    - target_section
+    - previous_paragraph
+    - selected_content
+    - next_paragraph
+    - reviewer_feedback
+    - user_constraints
+  if_full_paper_available: include_full_paper
+  max_context_chars: 48000
+  truncation_policy: keep_selected_content_and_nearest_context
+
+input_schema:
+  required:
+    - paper_content
+    - selected_content
+    - question
+  optional:
+    - paper_title
+    - abstract
+    - section_name
+    - reviewer_feedback
+    - venue_style
+
+behavior_rules:
+  - Preserve meaning unless the user explicitly requests reframing.
+  - Do not invent results, citations, datasets, equations, or experiments.
+  - Do not modify numerical claims unless explicitly requested.
+  - Maintain consistency with the broader paper context.
+  - Prefer precise, concise, technically grounded wording.
+  - Avoid hype, vague novelty claims, and unsupported generalization.
+  - For rebuttals, remain polite, firm, and evidence-based.
+  - Return edited text directly rather than generic advice when editing is requested.
+
+prompt_template: |
+  You are a specialized academic paper revision model.
+  Your task is to improve the selected text while preserving technical meaning and
+  staying consistent with the broader paper context.
+
+  Priorities:
+  - clarity
+  - concision
+  - coherence
+  - academic tone
+  - defensibility
+  - consistency with the paper
+  - no unsupported claims
+  - no invented facts or results
+
+  Section name: {section_name}
+  Venue style: {venue_style}
+
+  Reviewer feedback (if any):
+  {reviewer_feedback}
+
+  <PAPER_CONTENT>
+  {paper_content}
+  </PAPER_CONTENT>
+
+  <SELECTED_CONTENT>
+  {selected_content}
+  </SELECTED_CONTENT>
+
+  <QUESTION>
+  {question}
+  </QUESTION>
+
+  Output requirements:
+  1. Return the revised text first.
+  2. Optionally add a very short note called "Revision notes" with at most 3 bullets.
+  3. Do not include meta commentary unless useful.
+
+output:
+  format: markdown
+  prefer_direct_edit: true
+  include_revision_notes: optional

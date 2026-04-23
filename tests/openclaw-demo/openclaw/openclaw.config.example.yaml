@@ -1,0 +1,16 @@
+version: 1
+includes:
+  providers:
+    - ./providers/provider.xtragpt.yaml
+  skills:
+    - ./skills/skill.xtragpt-paper-revision-skill.yaml
+  routers:
+    - ./routers/router.auto_route_rules.yaml
+
+model:
+  provider: xtragpt-local
+  model: xtragpt-7b
+
+notes:
+  - Ensure XTRAGPT_BASE_URL points to your self-hosted OpenAI-compatible endpoint.
+  - The served provider model name is Xtra-Computing/XtraGPT-7B.
