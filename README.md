@@ -519,13 +519,12 @@ This work specifically targets the iterative process of paper revision, which is
 ## Citation
 
 ```bibtex
-@misc{nuo2025xtragpt,
-      title={XtraGPT: LLMs for Human-AI Collaboration on Controllable Academic Paper Revision},
-      author={Nuo Chen and Andre Lin HuiKai and Jiaying Wu and Junyi Hou and Zining Zhang and Qian Wang and Xidong Wang and Bingsheng He},
-      year={2025},
-      eprint={2505.11336},
-      archivePrefix={arXiv},
-      primaryClass={cs.CL},
-      url={https://arxiv.org/abs/2505.11336},
+@inproceedings{
+chen2026xtragpt,
+title={XtraGPT: Context-Aware and Controllable Academic Paper Revision via Human-AI Collaboration},
+author={Nuo Chen and Andre Lin HuiKai and Jiaying Wu and Junyi Hou and Zining Zhang and Qian Wang and Xidong Wang and Bingsheng He},
+booktitle = "Proceedings of the 64th Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers)",
+year={2026},
+note={Available on arXiv:2505.11336}
 }
 ```
